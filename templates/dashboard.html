@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head><title>Dashboard</title>
+<style>
+body { font-family: Arial, sans-serif; max-width: 700px; margin: 30px auto; padding: 20px; background: #f8fafc; }
+h1, h2 { color: #1a2744; }
+.task { border: 1px solid #e2e8f0; padding: 15px; margin: 10px 0; border-radius: 6px; background: white; }
+.task.done { background: #f0fdf4; }
+.task.done .task-title { text-decoration: line-through; color: #888; }
+.task-title { font-size: 16px; font-weight: bold; }
+.task-meta { color: #64748b; font-size: 13px; margin-top: 4px; }
+.task-desc { margin-top: 8px; color: #334155; }
+.task-actions { margin-top: 10px; }
+.btn { display: inline-block; padding: 6px 14px; color: white; text-decoration: none; border-radius: 4px; font-size: 13px; margin-right: 5px; }
+.btn-add { background: #0d9488; padding: 10px 20px; font-size: 14px; }
+.btn-done { background: #16a34a; }
+.btn-delete { background: #dc2626; }
+nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 2px solid #e2e8f0; padding-bottom: 15px; }
+.flash { padding: 10px; margin: 10px 0; border-radius: 4px; }
+.success { background: #d1fae5; color: #065f46; }
+.error { background: #fee2e2; color: #991b1b; }
+</style></head>
+<body>
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% for category, message in messages %}<div class="flash {{ category }}">{{ message }}</div>{% endfor %}
+{% endwith %}
+<nav><h1>Welcome, {{ username }}</h1><a href="/logout" class="btn btn-delete">Logout</a></nav>
+<a href="/task/add" class="btn btn-add">+ Add New Task</a>
+<h2>Your Tasks</h2>
+{% if tasks %}
+  {% for task in tasks %}
+  <div class="task {{ 'done' if task.completed }}">
+    <div class="task-title">{{ task.title }}</div>
+    {% if task.due_date %}<div class="task-meta">Due: {{ task.due_date }}</div>{% endif %}
+    {% if task.description %}<div class="task-desc">{{ task.description }}</div>{% endif %}
+    <div class="task-actions">
+      {% if not task.completed %}<a href="/task/complete/{{ task.id }}" class="btn btn-done">Complete</a>{% endif %}
+      <a href="/task/delete/{{ task.id }}" class="btn btn-delete">Delete</a>
+    </div>
+  </div>
+  {% endfor %}
+{% else %}
+  <p style="text-align:center; color:#94a3b8; padding:40px;">No tasks yet. Click "+ Add New Task" to get started!</p>
+{% endif %}
+</body></html>

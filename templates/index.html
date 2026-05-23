@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head><title>Task Manager</title>
+<style>
+body { font-family: Arial, sans-serif; max-width: 600px; margin: 50px auto; padding: 20px; background: #f8fafc; }
+h1 { color: #1a2744; }
+a { color: #0d9488; }
+.btn { display: inline-block; padding: 10px 20px; background: #0d9488; color: white; text-decoration: none; border-radius: 4px; margin: 5px; }
+.flash { padding: 10px; margin: 10px 0; border-radius: 4px; }
+.success { background: #d1fae5; color: #065f46; }
+.error { background: #fee2e2; color: #991b1b; }
+</style></head>
+<body>
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% for category, message in messages %}<div class="flash {{ category }}">{{ message }}</div>{% endfor %}
+{% endwith %}
+<h1>Task Manager</h1>
+<p>A simple task management application built with Flask.</p>
+<a href="/login" class="btn">Login</a> <a href="/register" class="btn">Register</a>
+</body></html>
