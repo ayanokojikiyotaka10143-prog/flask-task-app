@@ -87,6 +87,16 @@ def add_task():
         if not title:
             flash('Task title is required.', 'error')
             return render_template('add_task.html')
+        from datetime import datetime, date
+        if due_date:
+            try:
+                parsed_date = datetime.strptime(due_date, '%Y-%m-%d').date()
+                if parsed_date < date.today():
+                    flash('Due date cannot be in the past.', 'error')
+                    return render_template('add_task.html')
+            except ValueError:
+                flash('Invalid date format.', 'error')
+                return render_template('add_task.html')
         task_counter += 1
         task = {
             'id': task_counter,
