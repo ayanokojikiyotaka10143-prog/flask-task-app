@@ -50,6 +50,9 @@ def login():
     if request.method == 'POST':
         username = request.form.get('username', '').strip()
         password = request.form.get('password', '').strip()
+        if len(password) < 6:
+            flash('Password must be at least 6 characters.', 'error')
+            return render_template('login.html')
         if username in users and users[username] == password:
             session['username'] = username
             flash('Logged in successfully!', 'success')
