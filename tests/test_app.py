@@ -71,5 +71,30 @@ class TestDashboard(unittest.TestCase):
         self.assertIn(b'log in', response.data)
 
 
+
+
+class TestAddTask(unittest.TestCase):
+    def setUp(self):
+        app.config['TESTING'] = True
+        self.client = app.test_client()
+        self.client.post('/register', data={
+            'username': 'taskuser',
+            'password': 'pass123'
+        })
+        self.client.post('/login', data={
+            'username': 'taskuser',
+            'password': 'pass123'
+        })
+
+    def test_add_task_page_requires_login(self):
+        client2 = app.test_client()
+        response = client2.get('/task/add', follow_redirects=True)
+        self.assertIn(b'log in', response.data)
+
+    def test_add_task_page_loads_when_logged_in(self):
+        response = self.client.get('/task/add')
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b'Add New Task', response.data)
+
 if __name__ == '__main__':
     unittest.main()
